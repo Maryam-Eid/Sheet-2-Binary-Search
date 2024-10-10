@@ -4,18 +4,10 @@ using namespace std;
 typedef long long ll;
 
 bool can(ll mid, ll k, string s) {
+
     ll sum = 0;
-
-    for (int i = 1; i < mid; ++i) {
-        if (s[i] >= s[i - 1]) {
-            sum += (s[i] - s[i - 1]);
-        } else {
-            sum += s[i] + (10 - s[i - 1]);
-        }
-    }
-
-    if (s[mid - 1]) {
-        sum += (10 - s[mid - 1]);
+    for (int i = mid; i >= 0; --i) {
+        sum += (10 - ((s[i] + sum) % 10)) % 10;
     }
 
     return sum <= k;
@@ -29,12 +21,12 @@ void solve() {
 
     for (char &digit: s) digit -= '0';
 
-    ll l = 0, r = n, ans = 0;
+    ll l = 0, r = n - 1, ans = 0;
     while (l <= r) {
         ll mid = (l + r) / 2;
 
         if (can(mid, k, s)) {
-            ans = mid;
+            ans = mid + 1;
             l = mid + 1;
         } else {
             r = mid - 1;
